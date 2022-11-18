@@ -1,16 +1,28 @@
 package rafamattia.liwproject.models;
 
 public abstract class Person {
+    private int id;
     private String firstName;
     private String lastName;
-    private String contact;
+    private String phone;
     private String email;
+
+    public Person() {
+    }
 
     public Person(String firstName, String lastName, String contact, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.contact = contact;
+        this.phone = contact;
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -29,12 +41,12 @@ public abstract class Person {
         this.lastName = lastName;
     }
 
-    public String getContact() {
-        return contact;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
