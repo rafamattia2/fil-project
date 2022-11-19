@@ -1,7 +1,7 @@
 package rafamattia.liwproject.repository;
 
 import rafamattia.liwproject.factory.ConnectionFactory;
-import rafamattia.liwproject.models.Client;
+import rafamattia.liwproject.models.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,10 +9,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientRepo {
+public class EmployeeRepo {
 
-    public void save(Client client) {
-        String sql = "INSERT INTO cliente (NOME_CLIENTE, SOBRENOME_CLIENTE, TELEFONE, ENDERECO) VALUES (?, ?, ?, ?)";
+    public void save(Employee employee) {
+        String sql = "INSERT INTO funcionario (NOME_FUNCIONARIO, SOBRENOME_FUNCIONARIO, TELEFONE, ENDERECO, LOGIN, SENHA) VALUES (?, ?, ?, ?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -26,10 +26,12 @@ public class ClientRepo {
             pstm = conn.prepareStatement(sql);
 
             //Adicionar os valores que são esperados pela query
-            pstm.setString(1, client.getFirstName());
-            pstm.setString(2, client.getLastName());
-            pstm.setString(3, client.getPhone());
-            pstm.setString(4, client.getAddress());
+            pstm.setString(1, employee.getFirstName());
+            pstm.setString(2, employee.getLastName());
+            pstm.setString(3, employee.getPhone());
+            pstm.setString(4, employee.getAddress());
+            pstm.setString(5, employee.getLogin());
+            pstm.setString(6, employee.getPassword());
 
             //executar a query
             pstm.execute();
@@ -94,7 +96,7 @@ public class ClientRepo {
 
     public static void update(Client client){
         String sql = "UPDATE cliente SET NOME_CLIENTE = ?, SOBRENOME_CLIENTE = ?, TELEFONE = ?, ENDERECO=? " +
-                     "WHERE COD_CLIENTE = ?";
+                "WHERE COD_CLIENTE = ?";
         Connection conn = null;
         PreparedStatement pstm = null;
 

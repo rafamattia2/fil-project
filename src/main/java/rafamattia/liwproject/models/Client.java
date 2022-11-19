@@ -15,25 +15,6 @@ public class Client extends Person{
         super(firstName, lastName, contact, email);
     }
 
-    public void createService(int type, String name, String desc) {
-        Service newService = new Service(type, name, desc, this);
-    }
-
-    public void deleteService(Service service) {
-        service.setEnabled(Status.toEnum(0));
-    }
-
-    public void openService(Service service) {
-        service.setEnabled(Status.toEnum(1));
-    }
-
-    public void closeService(Service service) {
-        service.setEnabled(Status.toEnum(1));
-    }
-
-//    public Service searchService(String name) {
-//
-//    }
 
     public int getActiveServices() {
         return activeServices;
