@@ -8,11 +8,11 @@ public class Main {
     public static void main(String[] args) {
 
         ClientRepo clientRepo = new ClientRepo();
-        String nome = "gabrieru";
-        String sobrenome = "alfi ramirus";
-        String phone = "pega o zap do gato";
-        String email = "manda email pro netto";
-        Client cliente = new Client(nome, sobrenome, phone, email);
+        String nome = "Beatriz";
+        String sobrenome = "Mattia";
+        String phone = "51981016655";
+        String address = "uiizinhadashduashd@hotmail.com";
+        Client cliente = new Client(nome, sobrenome, phone, address);
 
         clientRepo.save(cliente);
 

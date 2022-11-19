@@ -13,7 +13,7 @@ public class ConnectionFactory {
     private static final String PASSWORD = "leafar97";
 
     //Caminho do banco de dados, porta, nome do banco de dados
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/dbapipetshop";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/fil_project";
 
     /*
     Conexão com o banco de dados

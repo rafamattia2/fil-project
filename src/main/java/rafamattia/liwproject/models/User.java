@@ -5,8 +5,8 @@ public abstract class User extends Person{
     private String username;
     private boolean enabled;
 
-    public User(String firstName, String lastName, String contact, String email, String username, String password) {
-        super(firstName, lastName, contact, email);
+    public User(String firstName, String lastName, String contact, String address, String username, String password) {
+        super(firstName, lastName, contact, address);
         this.password=password;
         this.username=username;
         this.enabled=true;

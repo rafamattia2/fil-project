@@ -5,16 +5,16 @@ public abstract class Person {
     private String firstName;
     private String lastName;
     private String phone;
-    private String email;
+    private String address;
 
     public Person() {
     }
 
-    public Person(String firstName, String lastName, String contact, String email) {
+    public Person(String firstName, String lastName, String contact, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = contact;
-        this.email = email;
+        this.address = address;
     }
 
     public int getId() {
@@ -49,11 +49,11 @@ public abstract class Person {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getAddress() {
+        return address;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
