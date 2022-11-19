@@ -1,12 +1,71 @@
 package rafamattia.liwproject.repository;
 
+import com.mysql.cj.jdbc.exceptions.PacketTooBigException;
 import rafamattia.liwproject.factory.ConnectionFactory;
 import rafamattia.liwproject.models.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRepo {
+
+    public static List<Client> getClientList(){
+        String sql = "SELECT * FROM cliente";
+        List<Client> clients = new ArrayList<Client>();
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        //variável que vai recuperar os dados do banco. ****SELECT****
+        ResultSet rset = null;
+        try {
+            conn = ConnectionFactory.createConnectionToMySQL();
+
+            pstm = conn.prepareStatement(sql);
+
+            rset = pstm.executeQuery();
+
+            while(rset.next()){
+                Client client = new Client();
+                //Recupera o ID
+                client.setId(rset.getInt("COD_CLIENTE"));
+                //recupera o nome
+                client.setFirstName(rset.getString("NOME_CLIENTE"));
+                //recupera o sobrenome
+                client.setLastName(rset.getString("SOBRENOME_CLIENTE"));
+                //recupera telefone
+                client.setPhone(rset.getString("TELEFONE"));
+                //recupera endereço
+                client.setAddress(rset.getString("ENDERECO"));
+                //recupera serviços ativos
+                client.setActiveServices(rset.getInt("SERVICOS_ATIVOS"));
+                //recupera total de serviços
+                client.setTotalServices(rset.getInt("SERVICOS_TOTAL"));
+
+                //adiciona na lista
+                clients.add(client);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(rset!=null) {
+                    rset.close();
+                }
+                if(pstm != null) {
+                    pstm.close();
+                }
+                if(conn != null){
+                    conn.close();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return clients;
+    }
     public Client findByName(Client client) {
         String sql = "SELECT * FROM cliente WHERE NOME_CLIENTE = \"cliente\" ";
 

@@ -8,6 +8,10 @@ public abstract class Person {
     private String address;
 
     public Person() {
+        setFirstName(null);
+        setLastName(null);
+        setPhone(null);
+        setAddress(null);
     }
 
     public Person(String firstName, String lastName, String contact, String address) {
