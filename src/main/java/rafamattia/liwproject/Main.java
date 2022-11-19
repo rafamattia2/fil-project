@@ -3,8 +3,11 @@ package rafamattia.liwproject;
 import org.mindrot.jbcrypt.BCrypt;
 import rafamattia.liwproject.models.Client;
 import rafamattia.liwproject.models.Employee;
+import rafamattia.liwproject.models.Material;
+import rafamattia.liwproject.models.enuns.MaterialType;
 import rafamattia.liwproject.repository.ClientRepo;
 import rafamattia.liwproject.repository.EmployeeRepo;
+import rafamattia.liwproject.repository.MaterialRepo;
 
 
 public class Main {
@@ -17,6 +20,17 @@ public class Main {
 //        Client cliente = new Client(nome, sobrenome, phone, address);
 
 //        clientRepo.save(cliente);
+
+        MaterialRepo materialRepo = new MaterialRepo();
+        int id_stock = 1;
+        String nome = "Tubo Quadrado 20x30 GALVANIZADO";
+        MaterialType tipo = MaterialType.TUBO_QUADRADO;
+        String dimensoes = "20x30x1,2";
+        int qtd_em_estoque = 5;
+        float value = 500;
+        Material material = new Material(id_stock, nome, tipo, dimensoes, qtd_em_estoque, value);
+
+        materialRepo.save(material);
 
 //        EmployeeRepo employeeRepo = new EmployeeRepo();
 //        String nome = "Beatriz";

@@ -2,6 +2,7 @@ package rafamattia.liwproject.models;
 
 import rafamattia.liwproject.models.enuns.Status;
 
+
 public class Service {
     private int type;
     private String name;
