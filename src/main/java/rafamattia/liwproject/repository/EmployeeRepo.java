@@ -1,5 +1,6 @@
 package rafamattia.liwproject.repository;
 
+import org.mindrot.jbcrypt.BCrypt;
 import rafamattia.liwproject.factory.ConnectionFactory;
 import rafamattia.liwproject.models.Employee;
 
@@ -26,12 +27,19 @@ public class EmployeeRepo {
             pstm = conn.prepareStatement(sql);
 
             //Adicionar os valores que são esperados pela query
+
+            //Encripta login
+            String hashedLogin = BCrypt.hashpw(employee.getLogin(), BCrypt.gensalt());
+
+            //encripta senha
+            String hashedPassword = BCrypt.hashpw(employee.getPassword(), BCrypt.gensalt());
+
             pstm.setString(1, employee.getFirstName());
             pstm.setString(2, employee.getLastName());
             pstm.setString(3, employee.getPhone());
             pstm.setString(4, employee.getAddress());
-            pstm.setString(5, employee.getLogin());
-            pstm.setString(6, employee.getPassword());
+            pstm.setString(5, hashedLogin);
+            pstm.setString(6, hashedPassword);
 
             //executar a query
             pstm.execute();
@@ -52,8 +60,8 @@ public class EmployeeRepo {
             }
         }
     }
-    public Client findByName(Client client) {
-        String sql = "SELECT * FROM cliente WHERE NOME_CLIENTE = \"cliente\" ";
+    public Employee findByName(Employee employee) {
+        String sql = "SELECT * FROM funcionario WHERE NOME_CLIENTE = \"cliente\" ";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -67,10 +75,10 @@ public class EmployeeRepo {
             pstm = conn.prepareStatement(sql);
 
             //Adicionar os valores que são esperados pela query
-            pstm.setString(1, client.getFirstName());
-            pstm.setString(2, client.getLastName());
-            pstm.setString(3, client.getPhone());
-            pstm.setString(4, client.getAddress());
+            pstm.setString(1, employee.getFirstName());
+            pstm.setString(2, employee.getLastName());
+            pstm.setString(3, employee.getPhone());
+            pstm.setString(4, employee.getAddress());
 
             //executar a query
             pstm.execute();
@@ -90,13 +98,13 @@ public class EmployeeRepo {
             } catch (Exception e){
                 e.printStackTrace();
             }
-            return client;
+            return employee;
         }
     }
 
-    public static void update(Client client){
-        String sql = "UPDATE cliente SET NOME_CLIENTE = ?, SOBRENOME_CLIENTE = ?, TELEFONE = ?, ENDERECO=? " +
-                "WHERE COD_CLIENTE = ?";
+    public static void update(Employee employee){
+        String sql = "UPDATE funcionario SET NOME_FUNCIONARIO = ?, SOBRENOME_FUNCIONARIO = ?, TELEFONE = ?, ENDERECO=? " +
+                "WHERE COD_FUNCIONARIO = ?";
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -108,12 +116,12 @@ public class EmployeeRepo {
             pstm = conn.prepareStatement(sql);
 
             //Adiciona valores para atualizar
-            pstm.setString(1, client.getFirstName());
-            pstm.setString(2, client.getLastName());
-            pstm.setString(3, client.getPhone());
-            pstm.setString(4, client.getAddress());
+            pstm.setString(1, employee.getFirstName());
+            pstm.setString(2, employee.getLastName());
+            pstm.setString(3, employee.getPhone());
+            pstm.setString(4, employee.getAddress());
             //QUAL O ID DO REGISTRO QUE DESEJA ATUALIZAR?
-            pstm.setInt(5, client.getId());
+            pstm.setInt(5, employee.getId());
 
             //Executa a query
             pstm.execute();
@@ -133,9 +141,9 @@ public class EmployeeRepo {
             }
         }
     }
-    public static List<Client> getClientList(){
-        String sql = "SELECT * FROM cliente";
-        List<Client> clients = new ArrayList<Client>();
+    public static List<Employee> getEmployeeList(){
+        String sql = "SELECT * FROM funcionario";
+        List<Employee> employees = new ArrayList<Employee>();
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -149,24 +157,20 @@ public class EmployeeRepo {
             rset = pstm.executeQuery();
 
             while(rset.next()){
-                Client client = new Client();
+                Employee employee = new Employee();
                 //Recupera o ID
-                client.setId(rset.getInt("COD_CLIENTE"));
+                employee.setId(rset.getInt("COD_FUNCIONARIO"));
                 //recupera o nome
-                client.setFirstName(rset.getString("NOME_CLIENTE"));
+                employee.setFirstName(rset.getString("NOME_FUNCIONARIO"));
                 //recupera o sobrenome
-                client.setLastName(rset.getString("SOBRENOME_CLIENTE"));
+                employee.setLastName(rset.getString("SOBRENOME_FUNCIONARIO"));
                 //recupera telefone
-                client.setPhone(rset.getString("TELEFONE"));
+                employee.setPhone(rset.getString("TELEFONE"));
                 //recupera endereço
-                client.setAddress(rset.getString("ENDERECO"));
-                //recupera serviços ativos
-                client.setActiveServices(rset.getInt("SERVICOS_ATIVOS"));
-                //recupera total de serviços
-                client.setTotalServices(rset.getInt("SERVICOS_TOTAL"));
+                employee.setAddress(rset.getString("ENDERECO"));
 
                 //adiciona na lista
-                clients.add(client);
+                employees.add(employee);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -185,7 +189,7 @@ public class EmployeeRepo {
                 e.printStackTrace();
             }
         }
-        return clients;
+        return employees;
     }
 
 }

@@ -9,8 +9,10 @@ public class Employee extends Person{
     }
 
 
-    public Employee(String firstName, String lastName, String contact, String email) {
+    public Employee(String firstName, String lastName, String contact, String email, String login, String password) {
         super(firstName, lastName, contact, email);
+        this.login = login;
+        this.password = password;
     }
 
     public String getPassword() {
