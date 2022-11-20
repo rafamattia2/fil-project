@@ -1,7 +1,7 @@
 package rafamattia.liwproject.models.enuns;
 
 public enum MaterialType {
-    TUBO_QUADRADO(0, "TUBO QUADRADO"), TUBO_REDONDO(1, "TUBO REDONDO"), BARRA_QUADRADA(2, "BARRA QUADRADA"), BARRA_REDONDA(3, "BARRA REDONDA"),
+    TUBO_QUADRADO(0, "TUBO QUADRADO"), TUBO(1, "TUBO"), BARRA(2, "BARRA"), BARRA_REDONDA(3, "BARRA REDONDA"),
     CHAPA(4, "CHAPA"), TELA(5, "TELA");
 
     private Integer cod;
@@ -19,6 +19,18 @@ public enum MaterialType {
 
         for (MaterialType x: MaterialType.values()) {
             if (cod.equals(x.getCod())){
+                return x;
+            }
+        }
+        throw new IllegalArgumentException("Tipo "+ cod +" é inválido!");
+    }
+    public static MaterialType toEnumString(String cod) {
+        if (cod == null){
+            return null;
+        }
+
+        for (MaterialType x: MaterialType.values()) {
+            if (cod.equals(x.getDescription())){
                 return x;
             }
         }

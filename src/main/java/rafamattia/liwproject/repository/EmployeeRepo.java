@@ -102,6 +102,61 @@ public class EmployeeRepo {
         }
     }
 
+    public static List<Employee> getEmployeeList(){
+        String sql = "SELECT * FROM funcionario";
+        List<Employee> employees = new ArrayList<Employee>();
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        //variável que vai recuperar os dados do banco. ****SELECT****
+        ResultSet rset = null;
+        try {
+            conn = ConnectionFactory.createConnectionToMySQL();
+
+            pstm = conn.prepareStatement(sql);
+
+            rset = pstm.executeQuery();
+
+            while(rset.next()){
+                Employee employee = new Employee();
+                //Recupera o ID
+                employee.setId(rset.getInt("COD_FUNCIONARIO"));
+                //recupera o nome
+                employee.setFirstName(rset.getString("NOME_FUNCIONARIO"));
+                //recupera o sobrenome
+                employee.setLastName(rset.getString("SOBRENOME_FUNCIONARIO"));
+                //recupera telefone
+                employee.setPhone(rset.getString("TELEFONE"));
+                //recupera endereço
+                employee.setAddress(rset.getString("ENDERECO"));
+                //recupera login
+                employee.setLogin(rset.getString("LOGIN"));
+                //recupera senha
+                employee.setPassword(rset.getString("SENHA"));
+
+                //adiciona na lista
+                employees.add(employee);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(rset!=null) {
+                    rset.close();
+                }
+                if(pstm != null) {
+                    pstm.close();
+                }
+                if(conn != null){
+                    conn.close();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return employees;
+    }
+
     public static void update(Employee employee){
         String sql = "UPDATE funcionario SET NOME_FUNCIONARIO = ?, SOBRENOME_FUNCIONARIO = ?, TELEFONE = ?, ENDERECO=? " +
                 "WHERE COD_FUNCIONARIO = ?";
@@ -141,55 +196,38 @@ public class EmployeeRepo {
             }
         }
     }
-    public static List<Employee> getEmployeeList(){
-        String sql = "SELECT * FROM funcionario";
-        List<Employee> employees = new ArrayList<Employee>();
+
+    public static void deleteById(int id){
+        String sql = "DELETE FROM funcionario WHERE COD_FUNCIONARIO = ?";
+
         Connection conn = null;
+
         PreparedStatement pstm = null;
 
-        //variável que vai recuperar os dados do banco. ****SELECT****
-        ResultSet rset = null;
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
 
             pstm = conn.prepareStatement(sql);
 
-            rset = pstm.executeQuery();
+            pstm.setInt(1, id);
 
-            while(rset.next()){
-                Employee employee = new Employee();
-                //Recupera o ID
-                employee.setId(rset.getInt("COD_FUNCIONARIO"));
-                //recupera o nome
-                employee.setFirstName(rset.getString("NOME_FUNCIONARIO"));
-                //recupera o sobrenome
-                employee.setLastName(rset.getString("SOBRENOME_FUNCIONARIO"));
-                //recupera telefone
-                employee.setPhone(rset.getString("TELEFONE"));
-                //recupera endereço
-                employee.setAddress(rset.getString("ENDERECO"));
-
-                //adiciona na lista
-                employees.add(employee);
-            }
-        }catch (Exception e){
+            pstm.execute();
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
+            System.out.println("Funcionário com ID " + id + " foi deletado.");
+
             try {
-                if(rset!=null) {
-                    rset.close();
-                }
-                if(pstm != null) {
+                if(pstm != null){
                     pstm.close();
                 }
+
                 if(conn != null){
-                    conn.close();
+                    pstm.close();
                 }
             } catch (Exception e){
                 e.printStackTrace();
             }
         }
-        return employees;
     }
-
 }

@@ -8,42 +8,52 @@ import rafamattia.liwproject.models.enuns.MaterialType;
 import rafamattia.liwproject.repository.ClientRepo;
 import rafamattia.liwproject.repository.EmployeeRepo;
 import rafamattia.liwproject.repository.MaterialRepo;
+import rafamattia.liwproject.repository.WorkInRepo;
 
 
 public class Main {
     public static void main(String[] args) {
+
+        //ADICIONA CLIENTE
 //        ClientRepo clientRepo = new ClientRepo();
 //        String nome = "Beatriz";
 //        String sobrenome = "Mattia";
 //        String phone = "51981016655";
 //        String address = "uiizinhadashduashd@hotmail.com";
 //        Client cliente = new Client(nome, sobrenome, phone, address);
-
+//
 //        clientRepo.save(cliente);
 
-        MaterialRepo materialRepo = new MaterialRepo();
-        int id_stock = 1;
-        String nome = "Tubo Quadrado 20x30 GALVANIZADO";
-        MaterialType tipo = MaterialType.TUBO_QUADRADO;
-        String dimensoes = "20x30x1,2";
-        int qtd_em_estoque = 5;
-        float value = 500;
-        Material material = new Material(id_stock, nome, tipo, dimensoes, qtd_em_estoque, value);
 
-        materialRepo.save(material);
+        //ADICIONA MATERIAL
+//        MaterialRepo materialRepo = new MaterialRepo();
+//        int id_stock = 1;
+//        String nome = "Tubo Quadrado 20x30 GALVANIZADO";
+//        MaterialType tipo = MaterialType.TUBO_QUADRADO;
+//        String dimensoes = "20x30x1,2";
+//        int qtd_em_estoque = 5;
+//        float value = 500;
+//        Material material = new Material(id_stock, nome, tipo, dimensoes, qtd_em_estoque, value);
+//
+//        materialRepo.save(material);
 
+
+        //ADICIONA FUNCIONARIO
 //        EmployeeRepo employeeRepo = new EmployeeRepo();
-//        String nome = "Beatriz";
-//        String sobrenome = "Mattia";
+//        String nome = "Amaral";
+//        String sobrenome = "Souza";
 //        String phone = "51981016655";
-//        String address = "uiizinhadashduashd@hotmail.com";
-//        String login = "testelogin";
-//        String password = "testepassword";
+//        String address = "teste@hotmail.com";
+//        String login = "testelogin3";
+//        String password = "testepassword3";
 //        Employee employee = new Employee(nome, sobrenome, phone, address, login, password);
 //
 //        employeeRepo.save(employee);
 
-        //Atualizar contato
+
+
+
+        //ATUALIZAR FUNCIONARIO
 //        Employee employee2 = new Employee();
 //        employee2.setFirstName("CECILIA");
 //        employee2.setLastName("BOTELHO SOUZA");
@@ -52,11 +62,35 @@ public class Main {
 //        employee2.setId(2);
 //
 //        EmployeeRepo.update(employee2);
+
+
+        //VISUALIZAR LISTA COMPLETA MATERIAIS
+//        for(Material e : MaterialRepo.getMaterialList()){
+//            System.out.println("ID: " + e.getId());
+//            System.out.println(e.getName());
+//            System.out.println(e.getMeasurements());
+//            System.out.println("ID DO LOCAL: " + e.getId_stock());
+//            System.out.println(e.getType());
+//            System.out.println(e.getMeasurements());
+//            System.out.println("*****************************************************");
 //
-        //Visualizar a lista de clients TODOS
-        for(Employee e : EmployeeRepo.getEmployeeList()){
-            System.out.println("Funcionário: " + e.getFirstName() + " "+ e.getLastName());
-        }
+//        }
+
+
+        //VISUALIZAR LISTA COMPLETA FUNCIONARIOS
+//        for(Employee e : EmployeeRepo.getEmployeeList()){
+//            System.out.println("Funcionário: " + e.getFirstName() + " "+ e.getLastName());
+//            System.out.println("Funcionário: " + e.getId());
+//        }
+//
+//        int i = 4;
+//        EmployeeRepo.deleteById(i);
+
+
+        //DAR ENTRADA EM SERVIÇO
+        //EmployeeRepo.deleteById(3);
+        WorkInRepo.signInInService(1, "testelogin3", "testepassword3");
+
     //***********TESTA PASSWORD JBCRYPT****************
 //
 //        String password = args[0];

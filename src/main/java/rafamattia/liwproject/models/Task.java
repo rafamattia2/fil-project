@@ -3,7 +3,8 @@ package rafamattia.liwproject.models;
 import rafamattia.liwproject.models.enuns.Status;
 
 
-public class Service {
+public class Task {
+    private int taskId;
     private int type;
     private String name;
     private String description;
@@ -22,7 +23,7 @@ public class Service {
         return enabled;
     }
 
-    public Service(int type, String name, String description, Client host) {
+    public Task(int type, String name, String description, Client host) {
         this.name = name;
         this.type = type;
         this.description = description;
@@ -30,17 +31,6 @@ public class Service {
         this.host = host;
     }
 
-    public void open() {
-        this.setEnabled(Status.toEnum(1));
-    }
-
-    public void close() {
-        this.setEnabled(Status.toEnum(0));
-    }
-
-    public void finish() {
-        this.setEnabled(Status.toEnum(2));
-    }
     public int getType() {
         return type;
     }
