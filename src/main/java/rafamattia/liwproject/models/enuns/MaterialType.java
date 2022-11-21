@@ -1,8 +1,8 @@
 package rafamattia.liwproject.models.enuns;
 
 public enum MaterialType {
-    TUBO_QUADRADO(0, "TUBO QUADRADO"), TUBO(1, "TUBO"), BARRA(2, "BARRA"), BARRA_REDONDA(3, "BARRA REDONDA"),
-    CHAPA(4, "CHAPA"), TELA(5, "TELA");
+    TUBO(0, "TUBO"), BARRA(1, "BARRA"), CHAPA(2, "CHAPA"), TELA(3, "TELA"),
+    PARAFUSO(3, "PARAFUSO"), DISCO(4, "DISCO");
 
     private Integer cod;
     private String description;
