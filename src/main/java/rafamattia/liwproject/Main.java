@@ -4,11 +4,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import rafamattia.liwproject.models.Client;
 import rafamattia.liwproject.models.Employee;
 import rafamattia.liwproject.models.Material;
+import rafamattia.liwproject.models.Wage;
 import rafamattia.liwproject.models.enuns.MaterialType;
-import rafamattia.liwproject.repository.ClientRepo;
-import rafamattia.liwproject.repository.EmployeeRepo;
-import rafamattia.liwproject.repository.MaterialRepo;
-import rafamattia.liwproject.repository.WorkInRepo;
+import rafamattia.liwproject.repository.*;
 
 
 public class Main {
@@ -77,6 +75,23 @@ public class Main {
 //        }
 
 
+        //ADICIONA SALARIO
+//        WageRepo wageRepo = new WageRepo();
+//        int idEmployee = 6;
+//        Float value =  1450.00f;
+//
+//
+//        Wage wage = new Wage(idEmployee, value);
+//
+//        wageRepo.save(wage);
+//
+//        //VISUALIZAR LISTA COMPLETA DE SALARIOS
+//
+        for(Wage e : WageRepo.getWageList()){
+            System.out.println("Id Funcionário: "+e.getIdEmployee());
+            System.out.println("Valor: " + e.getValue());
+        }
+
         //VISUALIZAR LISTA COMPLETA FUNCIONARIOS
 //        for(Employee e : EmployeeRepo.getEmployeeList()){
 //            System.out.println("Funcionário: " + e.getFirstName() + " "+ e.getLastName());
@@ -87,9 +102,11 @@ public class Main {
 //        EmployeeRepo.deleteById(i);
 
 
-        //DAR ENTRADA EM SERVIÇO
-        //EmployeeRepo.deleteById(3);
-        WorkInRepo.signInInService(1, "testelogin3", "testepassword3");
+
+        //WageRepo.deleteById(2);
+
+        //DAR ENTRADA ENTRA NO SERVIÇO
+        //WorkInRepo.signInInService(1, "testelogin3", "testepassword3");
 
     //***********TESTA PASSWORD JBCRYPT****************
 //
