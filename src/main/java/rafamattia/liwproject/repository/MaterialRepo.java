@@ -56,6 +56,58 @@ public class MaterialRepo {
         }
     }
 
+    public static Material findMaterialById(int materialId) {
+        String sql = "SELECT * FROM material WHERE COD_MATERIAL = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        Material material = new Material();
+
+        //variável que vai recuperar os dados do banco. ****SELECT****
+        ResultSet rset = null;
+        try{
+
+            //criar uma conexão com o banco de dados
+            conn = ConnectionFactory.createConnectionToMySQL();
+
+            //criar uma preparedstatement, para executar uma query
+            pstm = conn.prepareStatement(sql);
+
+            //Adicionar os valores que são esperados pela query
+            pstm.setInt(1, materialId);
+
+            //executar a query
+            rset = pstm.executeQuery();
+
+            rset.next();
+            material.setId(rset.getInt("COD_MATERIAL"));
+            material.setName(rset.getString("NOME_MATERIAL"));
+            material.setId_stock(rset.getInt("COD_ESTOQUE"));
+            material.setType(MaterialType.toEnumString(rset.getString("TIPO_MATERIAL")));
+            material.setMeasurements(rset.getString("DIMENSOES"));
+            material.setAmount(rset.getInt("QTD_EM_ESTOQUE"));
+            material.setValue(rset.getFloat("VALOR"));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }finally{
+
+            System.out.println("Feito!!");
+            //fecha as conexões
+            try {
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (conn != null){
+                    conn.close();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return material;
+    }
     public static List<Material> getMaterialList(){
         String sql = "SELECT * FROM material";
         List<Material> materials = new ArrayList<Material>();
@@ -106,6 +158,44 @@ public class MaterialRepo {
             }
         }
         return materials;
+    }
+
+    public static void updateAmountByMaterialId (int materialId, int newAmount){
+        String sql = "UPDATE material SET QTD_EM_ESTOQUE = ? " +
+                "WHERE COD_MATERIAL = ?";
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            //Cria conexão com o banco
+            conn = ConnectionFactory.createConnectionToMySQL();
+
+            //Cria classe para executar a classe
+            pstm = conn.prepareStatement(sql);
+
+            //Adiciona valores para atualizar
+            pstm.setFloat(1, newAmount);
+
+            //QUAL O ID DO REGISTRO QUE DESEJA ATUALIZAR?
+            pstm.setInt(5, materialId);
+
+            //Executa a query
+            pstm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("Usuário atualizado!!!");
+            try {
+                if(conn != null) {
+                    conn.close();
+                }
+                if (pstm != null){
+                    pstm.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void deleteById(int id){
