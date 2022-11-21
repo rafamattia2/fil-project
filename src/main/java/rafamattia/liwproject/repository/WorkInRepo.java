@@ -37,7 +37,6 @@ public class WorkInRepo {
 
                 //Adicionar os valores que são esperados pela query
                 if(test != null) {
-                    //LocalDateTime lt = LocalDateTime.now();
                     pstm.setInt(1, test.getId());
                     pstm.setInt(2, taskId);
                     pstm.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
@@ -49,7 +48,7 @@ public class WorkInRepo {
             } catch (Exception e) {
                 e.printStackTrace();
             }finally{
-                System.out.println("Feito!!!!!!!");
+                System.out.println("Entrada em serviço!");
                 //fecha as conexões
                 try {
                     if (pstm != null) {
@@ -63,6 +62,44 @@ public class WorkInRepo {
                 }
             }
     }
+
+    public static void logoutInService(int idWorking){
+            String sql = "UPDATE trabalha_em SET HORARIO_SAIDA = ? " +
+                    "WHERE COD_TRABALHANDO = ?";
+            Connection conn = null;
+            PreparedStatement pstm = null;
+
+            try {
+                //Cria conexão com o banco
+                conn = ConnectionFactory.createConnectionToMySQL();
+
+                //Cria classe para executar a classe
+                pstm = conn.prepareStatement(sql);
+
+                //Adiciona valores para atualizar
+                pstm.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+
+                //QUAL O ID DO REGISTRO QUE DESEJA ATUALIZAR?
+                pstm.setInt(2, idWorking);
+
+                //Executa a query
+                pstm.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                System.out.println("Saída de serviço!");
+                try {
+                    if(conn != null) {
+                        conn.close();
+                    }
+                    if (pstm != null){
+                        pstm.close();
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     public static Employee employeeExist(String hashedLogin, String hashedPassword){
         try {
             for(Employee e : EmployeeRepo.getEmployeeList()){
