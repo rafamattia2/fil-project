@@ -3,6 +3,7 @@ package rafamattia.liwproject.repository;
 import org.mindrot.jbcrypt.BCrypt;
 import rafamattia.liwproject.factory.ConnectionFactory;
 import rafamattia.liwproject.models.Employee;
+import rafamattia.liwproject.models.enuns.MaterialType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,28 +61,40 @@ public class EmployeeRepo {
             }
         }
     }
-    public Employee findByName(Employee employee) {
-        String sql = "SELECT * FROM funcionario WHERE NOME_CLIENTE = \"cliente\" ";
+
+    public static Employee findById(int id) {
+        String sql = "SELECT * FROM funcionario WHERE COD_FUNCIONARIO = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
 
-        try{
+        Employee employee = new Employee();
 
+        //variável que vai recuperar os dados do banco. ****SELECT****
+        ResultSet rset = null;
+        try{
             //criar uma conexão com o banco de dados
             conn = ConnectionFactory.createConnectionToMySQL();
 
             //criar uma preparedstatement, para executar uma query
             pstm = conn.prepareStatement(sql);
 
+
+
             //Adicionar os valores que são esperados pela query
-            pstm.setString(1, employee.getFirstName());
-            pstm.setString(2, employee.getLastName());
-            pstm.setString(3, employee.getPhone());
-            pstm.setString(4, employee.getAddress());
+            pstm.setInt(1, id);
 
             //executar a query
-            pstm.execute();
+            rset=pstm.executeQuery();
+
+            rset.next();
+            employee.setId(rset.getInt("COD_FUNCIONARIO"));
+            employee.setFirstName(rset.getString("NOME_FUNCIONARIO"));
+            employee.setLastName(rset.getString("SOBRENOME_FUNCIONARIO"));
+            employee.setPhone(rset.getString("TELEFONE"));
+            employee.setAddress(rset.getString("ENDERECO"));
+            employee.setLogin(rset.getString("LOGIN"));
+            employee.setPassword(rset.getString("ENDERECO"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }finally{
@@ -98,8 +111,60 @@ public class EmployeeRepo {
             } catch (Exception e){
                 e.printStackTrace();
             }
-            return employee;
         }
+        return employee;
+    }
+    public static Employee findByName(String name) {
+        String sql = "SELECT * FROM funcionario WHERE NOME_FUNCIONARIO = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        Employee employee = new Employee();
+
+        //variável que vai recuperar os dados do banco. ****SELECT****
+        ResultSet rset = null;
+        try{
+            //criar uma conexão com o banco de dados
+            conn = ConnectionFactory.createConnectionToMySQL();
+
+            //criar uma preparedstatement, para executar uma query
+            pstm = conn.prepareStatement(sql);
+
+
+
+            //Adicionar os valores que são esperados pela query
+            pstm.setString(1, name);
+
+            //executar a query
+            rset=pstm.executeQuery();
+
+            rset.next();
+            employee.setId(rset.getInt("COD_FUNCIONARIO"));
+            employee.setFirstName(rset.getString("NOME_FUNCIONARIO"));
+            employee.setLastName(rset.getString("SOBRENOME_FUNCIONARIO"));
+            employee.setPhone(rset.getString("TELEFONE"));
+            employee.setAddress(rset.getString("ENDERECO"));
+            employee.setLogin(rset.getString("LOGIN"));
+            employee.setPassword(rset.getString("ENDERECO"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }finally{
+
+            System.out.println("Feito!!");
+            //fecha as conexões
+            try {
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (conn != null){
+                    conn.close();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return employee;
     }
 
     public static List<Employee> getEmployeeList(){

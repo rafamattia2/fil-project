@@ -160,7 +160,7 @@ public class MaterialRepo {
         return materials;
     }
 
-    public static void updateAmountByMaterialId (int materialId, int newAmount){
+    public static void updateAmountByMaterialId (int materialId, int addAmount){
         String sql = "UPDATE material SET QTD_EM_ESTOQUE = ? " +
                 "WHERE COD_MATERIAL = ?";
         Connection conn = null;
@@ -173,18 +173,22 @@ public class MaterialRepo {
             //Cria classe para executar a classe
             pstm = conn.prepareStatement(sql);
 
+            //SOMA A QUANTIDADE ANTERIOR COM A QUANTIDADE A SER ADICIONADA
+            Material material = MaterialRepo.findMaterialById(materialId);
+            addAmount = material.getAmount() + addAmount;
+
             //Adiciona valores para atualizar
-            pstm.setFloat(1, newAmount);
+            pstm.setFloat(1, addAmount);
 
             //QUAL O ID DO REGISTRO QUE DESEJA ATUALIZAR?
-            pstm.setInt(5, materialId);
+            pstm.setInt(2, materialId);
 
             //Executa a query
             pstm.execute();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            System.out.println("Usuário atualizado!!!");
+            System.out.println("Quantidade em estoque do material foi atualizado!!!");
             try {
                 if(conn != null) {
                     conn.close();

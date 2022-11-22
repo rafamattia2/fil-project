@@ -49,8 +49,6 @@ public class Main {
 //        employeeRepo.save(employee);
 
 
-
-
         //ATUALIZAR FUNCIONARIO
 //        Employee employee2 = new Employee();
 //        employee2.setFirstName("CECILIA");
@@ -61,17 +59,35 @@ public class Main {
 //
 //        EmployeeRepo.update(employee2);
 
-
-        //BUSCA MATERIAL POR ID
-        Material material = MaterialRepo.findMaterialById(3);
-            System.out.println("ID: " + material.getId());
-            System.out.println(material.getName());
-            System.out.println(material.getMeasurements());
-            System.out.println("ID DO LOCAL: " + material.getId_stock());
-            System.out.println(material.getMeasurements());
+        //VISUALIZAR FUNCIONARIO POR ID
+            Employee employee = EmployeeRepo.findById(5);
+            System.out.println("ID: " + employee.getId());
+            System.out.println("Nome: " + employee.getFirstName());
+            System.out.println("Sobrenome: " + employee.getLastName());
+            System.out.println("Telefone: " + employee.getPhone());
+            System.out.println("Endereço: " + employee.getAddress());
             System.out.println("*****************************************************");
 
-        }
+        //VISUALIZAR LISTA COMPLETA FUNCIONARIOS
+//        for(Employee e : EmployeeRepo.getEmployeeList()){
+//            System.out.println("Funcionário: " + e.getFirstName() + " "+ e.getLastName());
+//            System.out.println("Funcionário: " + e.getId());
+//        }
+
+        //BUSCA MATERIAL POR ID
+//        Material material = MaterialRepo.findMaterialById(3);
+//            System.out.println("ID: " + material.getId());
+//            System.out.println(material.getName());
+//            System.out.println(material.getMeasurements());
+//            System.out.println("ID DO LOCAL: " + material.getId_stock());
+//            System.out.println(material.getMeasurements());
+//            System.out.println("*****************************************************");
+//
+//
+        //ADICIONA QUANTIDADE EM MATERIAL POR ID
+        //MaterialRepo.updateAmountByMaterialId(1, 15);
+
+
         //VISUALIZAR LISTA COMPLETA MATERIAIS
 //        for(Material e : MaterialRepo.getMaterialList()){
 //            System.out.println("ID: " + e.getId());
@@ -102,24 +118,19 @@ public class Main {
 //            System.out.println("Valor: " + e.getValue());
 //        }
 
-        //VISUALIZAR LISTA COMPLETA FUNCIONARIOS
-//        for(Employee e : EmployeeRepo.getEmployeeList()){
-//            System.out.println("Funcionário: " + e.getFirstName() + " "+ e.getLastName());
-//            System.out.println("Funcionário: " + e.getId());
-//        }
+
 //
 //        int i = 4;
 //        EmployeeRepo.deleteById(i);
-
 
 
         //WageRepo.deleteById(2);
 
         //DAR ENTRADA ENTRA NO SERVIÇO
         //WorkInRepo.signInInService(1, "testelogin3", "testepassword3");
-       //WorkInRepo.logoutInService(1);
+        //WorkInRepo.logoutInService(1);
 
-    //***********TESTA PASSWORD JBCRYPT****************
+        //***********TESTA PASSWORD JBCRYPT****************
 //
 //        String password = args[0];
 //        String candidate = args[1];
@@ -136,6 +147,7 @@ public class Main {
 //            return true;
 //        else
 //            return false;
-    //***********TESTA PASSWORD JBCRYPT****************
+        //***********TESTA PASSWORD JBCRYPT****************
     }
+}
 
