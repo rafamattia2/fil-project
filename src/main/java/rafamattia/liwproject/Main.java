@@ -86,7 +86,8 @@ public class Main {
 //
 //
         //ADICIONA QUANTIDADE EM MATERIAL POR ID
-        //MaterialRepo.updateAmountByMaterialId(1, 15);
+        int amount = 15;
+        MaterialRepo.updateAmountByMaterialId(1, -amount);
 
 
         //VISUALIZAR LISTA COMPLETA MATERIAIS
