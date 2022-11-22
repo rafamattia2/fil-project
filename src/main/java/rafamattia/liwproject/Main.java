@@ -1,12 +1,13 @@
 package rafamattia.liwproject;
 
+import net.bytebuddy.asm.Advice;
 import org.mindrot.jbcrypt.BCrypt;
-import rafamattia.liwproject.models.Client;
-import rafamattia.liwproject.models.Employee;
-import rafamattia.liwproject.models.Material;
-import rafamattia.liwproject.models.Wage;
+import rafamattia.liwproject.models.*;
 import rafamattia.liwproject.models.enuns.MaterialType;
 import rafamattia.liwproject.repository.*;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 public class Main {
@@ -60,13 +61,13 @@ public class Main {
 //        EmployeeRepo.update(employee2);
 
         //VISUALIZAR FUNCIONARIO POR ID
-            Employee employee = EmployeeRepo.findById(5);
-            System.out.println("ID: " + employee.getId());
-            System.out.println("Nome: " + employee.getFirstName());
-            System.out.println("Sobrenome: " + employee.getLastName());
-            System.out.println("Telefone: " + employee.getPhone());
-            System.out.println("Endereço: " + employee.getAddress());
-            System.out.println("*****************************************************");
+//            Employee employee = EmployeeRepo.findById(5);
+//            System.out.println("ID: " + employee.getId());
+//            System.out.println("Nome: " + employee.getFirstName());
+//            System.out.println("Sobrenome: " + employee.getLastName());
+//            System.out.println("Telefone: " + employee.getPhone());
+//            System.out.println("Endereço: " + employee.getAddress());
+//            System.out.println("*****************************************************");
 
         //VISUALIZAR LISTA COMPLETA FUNCIONARIOS
 //        for(Employee e : EmployeeRepo.getEmployeeList()){
@@ -105,8 +106,6 @@ public class Main {
 //        WageRepo wageRepo = new WageRepo();
 //        int idEmployee = 6;
 //        Float value =  1450.00f;
-//
-//
 //        Wage wage = new Wage(idEmployee, value);
 //
 //        wageRepo.save(wage);
@@ -130,6 +129,21 @@ public class Main {
         //WorkInRepo.signInInService(1, "testelogin3", "testepassword3");
         //WorkInRepo.logoutInService(1);
 
+        //Adiciona Pagamento
+
+//        int wageId = 3;
+//        Timestamp date = Timestamp.valueOf(LocalDateTime.now());
+//        Payment payment = new Payment(wageId, date);
+//        PaymentRepo.save(payment);
+
+        //Procura pagamento por ID de pagamento
+//        Payment payment2 = PaymentRepo.findById(1);
+//        System.out.println("Id Pagamento: "+payment2.getPaymentId());
+//        System.out.println("Id Salário: "+payment2.getWageId());
+//        System.out.println("Valor: " + payment2.getValue());
+
+        //Deleta pagamento por ID
+        PaymentRepo.deleteById(2);
         //***********TESTA PASSWORD JBCRYPT****************
 //
 //        String password = args[0];

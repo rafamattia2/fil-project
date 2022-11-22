@@ -1,43 +1,46 @@
 package rafamattia.liwproject.repository;
 
+import org.mindrot.jbcrypt.BCrypt;
 import rafamattia.liwproject.factory.ConnectionFactory;
 import rafamattia.liwproject.models.Employee;
-import rafamattia.liwproject.models.Material;
+import rafamattia.liwproject.models.Payment;
 import rafamattia.liwproject.models.Wage;
-import rafamattia.liwproject.models.enuns.MaterialType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WageRepo {
-    public void save(Wage wage) {
-        String sql = "INSERT INTO salario (COD_SALARIO, COD_FUNCIONARIO, VALOR_SALARIO) VALUES (?, ?, ?)";
+public class PaymentRepo {
+    public static void save(Payment payment) {
+        String sql = "INSERT INTO pagamento (COD_SALARIO, DATA_EMISSAO, VALOR) VALUES (?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement pstm = null;
 
+        Wage wage = WageRepo.findById(payment.getWageId());
         try{
+
             //criar uma conexão com o banco de dados
             conn = ConnectionFactory.createConnectionToMySQL();
 
             //criar uma preparedstatement, para executar uma query
             pstm = conn.prepareStatement(sql);
-
             //Adicionar os valores que são esperados pela query
-            pstm.setInt(1, wage.getId());
-            pstm.setInt(2, wage.getIdEmployee());
+
+            pstm.setInt(1, payment.getWageId());
+            pstm.setTimestamp(2, payment.getIssueDate());
             pstm.setFloat(3, wage.getValue());
 
             //executar a query
             pstm.execute();
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }finally{
-            System.out.println("Feito!!");
+            System.out.println("Pagamento feito!!");
             //fecha as conexões
             try {
                 if (pstm != null) {
@@ -52,13 +55,13 @@ public class WageRepo {
         }
     }
 
-    public static Wage findById(int id) {
-        String sql = "SELECT * FROM salario WHERE COD_SALARIO = ?";
+    public static Payment findById(int id) {
+        String sql = "SELECT * FROM pagamento WHERE COD_PAGAMENTO = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
 
-        Wage wage = new Wage();
+        Payment payment = new Payment();
 
         //variável que vai recuperar os dados do banco. ****SELECT****
         ResultSet rset = null;
@@ -69,8 +72,6 @@ public class WageRepo {
             //criar uma preparedstatement, para executar uma query
             pstm = conn.prepareStatement(sql);
 
-
-
             //Adicionar os valores que são esperados pela query
             pstm.setInt(1, id);
 
@@ -78,9 +79,10 @@ public class WageRepo {
             rset=pstm.executeQuery();
 
             rset.next();
-            wage.setId(rset.getInt("COD_SALARIO"));
-            wage.setIdEmployee(rset.getInt("COD_FUNCIONARIO"));
-            wage.setValue(rset.getFloat("VALOR_SALARIO"));
+            payment.setPaymentId(rset.getInt("COD_PAGAMENTO"));
+            payment.setWageId(rset.getInt("COD_SALARIO"));
+            payment.setIssueDate(rset.getTimestamp("DATA_EMISSAO"));
+            payment.setValue(rset.getFloat("VALOR"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }finally{
@@ -98,11 +100,12 @@ public class WageRepo {
                 e.printStackTrace();
             }
         }
-        return wage;
+        return payment;
     }
-    public static List<Wage> getWageList(){
-        String sql = "SELECT * FROM salario";
-        List<Wage> wages = new ArrayList<Wage>();
+
+    public static List<Payment> getEmployeeList(){
+        String sql = "SELECT * FROM pagamento";
+        List<Payment> payments = new ArrayList<Payment>();
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -116,16 +119,18 @@ public class WageRepo {
             rset = pstm.executeQuery();
 
             while(rset.next()){
-                Wage wage = new Wage();
-                //Recupera o ID do SALARIO
-                wage.setId(rset.getInt("COD_SALARIO"));
-                //Recupera o ID do FUNCIONARIO
-                wage.setIdEmployee(rset.getInt("COD_FUNCIONARIO"));
-                //recupera o VALOR do SALARIO
-                wage.setValue(rset.getFloat("VALOR_SALARIO"));
+                Payment payment = new Payment();
+                //Recupera o ID do salario
+                payment.setWageId(rset.getInt("COD_SALARIO"));
+                //recupera o ID do pagamento
+                payment.setPaymentId(rset.getInt("COD_PAGAMENTO"));
+                //recupera a data da emissão
+                payment.setIssueDate(rset.getTimestamp("DATA_EMISSAO"));
+                //recupera o valor do pagamento
+                payment.setValue(rset.getInt("VALOR"));
 
                 //adiciona na lista
-                wages.add(wage);
+                payments.add(payment);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -144,49 +149,11 @@ public class WageRepo {
                 e.printStackTrace();
             }
         }
-        return wages;
-    }
-
-    public static void updateByEmployeeId(Wage wage){
-        String sql = "UPDATE salario SET VALOR_SALARIO = ? " +
-                "WHERE COD_FUNCIONARIO = ?";
-        Connection conn = null;
-        PreparedStatement pstm = null;
-
-        try {
-            //Cria conexão com o banco
-            conn = ConnectionFactory.createConnectionToMySQL();
-
-            //Cria classe para executar a classe
-            pstm = conn.prepareStatement(sql);
-
-            //Adiciona valores para atualizar
-            pstm.setFloat(3, wage.getValue());
-
-            //QUAL O ID DO REGISTRO QUE DESEJA ATUALIZAR?
-            pstm.setInt(5, wage.getIdEmployee());
-
-            //Executa a query
-            pstm.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            System.out.println("Salário do funcionário com ID "+wage.getId()+" foi atualizado!!!");
-            try {
-                if(conn != null) {
-                    conn.close();
-                }
-                if (pstm != null){
-                    pstm.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
+        return payments;
     }
 
     public static void deleteById(int id){
-        String sql = "DELETE FROM salario WHERE COD_SALARIO = ?";
+        String sql = "DELETE FROM pagamento WHERE COD_PAGAMENTO = ?";
 
         Connection conn = null;
 
@@ -203,7 +170,7 @@ public class WageRepo {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            System.out.println("Salario com ID " + id + " foi deletado.");
+            System.out.println("Pagamento com ID " + id + " foi deletado.");
 
             try {
                 if(pstm != null){
