@@ -1,6 +1,16 @@
 package rafamattia.liwproject.models;
 
 public class TaskConsume {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private int taskId;
     private int materialId;
     private int quantityUsed;
@@ -10,7 +20,8 @@ public class TaskConsume {
         quantityUsed = 0;
         value = 0f;
     }
-    public TaskConsume(int taskId, int materialId, int quantityUsed, float value) {
+    public TaskConsume(String name,int taskId, int materialId, int quantityUsed, float value) {
+        this.name = name;
         this.taskId = taskId;
         this.materialId = materialId;
         this.quantityUsed = quantityUsed;

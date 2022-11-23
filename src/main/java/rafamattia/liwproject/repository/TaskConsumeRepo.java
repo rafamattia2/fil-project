@@ -52,8 +52,17 @@ public class TaskConsumeRepo {
         }
     }
 
+    public static void getTaskConsumeTotalValue(int taskId) {
+        float totalValue=0f;
+        for (TaskConsume task : TaskConsumeRepo.getTaskConsumeList(taskId)) {
+            totalValue += task.getValue()*task.getQuantityUsed();
+            System.out.println("ID: " + task.getMaterialId() + " || Nome: " + task.getName() + " || Quantidade utilizda: " + task.getQuantityUsed() + " || Valor unitário: " + task.getValue());
+        }
+        System.out.println("Valor total dos materiais utilizados: " + totalValue);
+    }
+
     public static List<TaskConsume> getTaskConsumeList(int taskId){
-        String sql = "SELECT * FROM funcionario WHERE COD_SERVICO = ?";
+        String sql = "SELECT * FROM utiliza WHERE COD_SERVICO = ?";
         List<TaskConsume> taskConsumes = new ArrayList<TaskConsume>();
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -66,12 +75,18 @@ public class TaskConsumeRepo {
 
             pstm = conn.prepareStatement(sql);
 
+            pstm.setInt(1, taskId);
+
             rset = pstm.executeQuery();
 
             while(rset.next()){
                 TaskConsume taskConsume = new TaskConsume();
+
                 //LOCALIZA O MATERIAL PARA ASSIM CONSEGUIR O VALOR DELE
                 Material material = MaterialRepo.findMaterialById(rset.getInt("COD_MATERIAL"));
+
+                //Recupera o Nome do material
+                taskConsume.setName(material.getName());
                 //Recupera o ID do serviço
                 taskConsume.setTaskId(rset.getInt("COD_SERVICO"));
                 //Recupera o ID do material

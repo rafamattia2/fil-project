@@ -86,8 +86,7 @@ public class Main {
 //
 //
         //ADICIONA QUANTIDADE EM MATERIAL POR ID
-        int amount = 15;
-        MaterialRepo.updateAmountByMaterialId(1, -amount);
+//        MaterialRepo.updateAmountByMaterialId(1, 15);
 
 
         //VISUALIZAR LISTA COMPLETA MATERIAIS
@@ -102,6 +101,12 @@ public class Main {
 //
 //        }
 
+        //Adicionar quantidade de materiais gasto no serviço na tabela UTILIZA
+//        TaskConsumeRepo.consume(1, 1, 10);
+//        TaskConsumeRepo.consume(1, 2, 2);
+//        TaskConsumeRepo.consume(1, 3, 7);
+        //Lista os materiais utilizado por um serviço
+        TaskConsumeRepo.getTaskConsumeTotalValue(1);
 
         //ADICIONA SALARIO
 //        WageRepo wageRepo = new WageRepo();
@@ -144,7 +149,7 @@ public class Main {
 //        System.out.println("Valor: " + payment2.getValue());
 
         //Deleta pagamento por ID
-        PaymentRepo.deleteById(2);
+//        PaymentRepo.deleteById(2);
         //***********TESTA PASSWORD JBCRYPT****************
 //
 //        String password = args[0];
