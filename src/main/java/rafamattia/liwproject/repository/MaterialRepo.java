@@ -90,7 +90,7 @@ public class MaterialRepo {
             material.setValue(rset.getFloat("VALOR"));
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }finally{
 
             System.out.println("Feito!!");
