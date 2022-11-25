@@ -2,6 +2,7 @@ package rafamattia.liwproject.repository;
 
 import rafamattia.liwproject.factory.ConnectionFactory;
 import rafamattia.liwproject.models.Client;
+import rafamattia.liwproject.models.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,28 +51,39 @@ public class ClientRepo {
             }
         }
     }
-    public Client findByName(Client client) {
-        String sql = "SELECT * FROM cliente WHERE NOME_CLIENTE = \"cliente\" ";
+    public Client findByName(String name) {
+        String sql = "SELECT * FROM cliente WHERE NOME_CLIENTE = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
 
-        try{
+        Client client = new Client();
 
+        //variável que vai recuperar os dados do banco. ****SELECT****
+        ResultSet rset = null;
+        try{
             //criar uma conexão com o banco de dados
             conn = ConnectionFactory.createConnectionToMySQL();
 
             //criar uma preparedstatement, para executar uma query
             pstm = conn.prepareStatement(sql);
 
+
+
             //Adicionar os valores que são esperados pela query
-            pstm.setString(1, client.getFirstName());
-            pstm.setString(2, client.getLastName());
-            pstm.setString(3, client.getPhone());
-            pstm.setString(4, client.getAddress());
+            pstm.setString(1, name);
 
             //executar a query
-            pstm.execute();
+            rset=pstm.executeQuery();
+
+            rset.next();
+            client.setId(rset.getInt("COD_CLIENTE"));
+            client.setFirstName(rset.getString("NOME_CLIENTE"));
+            client.setLastName(rset.getString("SOBRENOME_CLIENTE"));
+            client.setPhone(rset.getString("TELEFONE"));
+            client.setAddress(rset.getString("ENDERECO"));
+            client.setActiveServices(rset.getInt("SERVICOS_ATIVOS"));
+            client.setTotalServices(rset.getInt("SERVICOS_TOTAL"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }finally{
@@ -88,8 +100,8 @@ public class ClientRepo {
             } catch (Exception e){
                 e.printStackTrace();
             }
-            return client;
         }
+        return client;
     }
 
     public static void update(Client client){
